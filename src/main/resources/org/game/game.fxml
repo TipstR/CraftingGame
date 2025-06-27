@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.game.GameController">
    <children>
@@ -12,5 +13,12 @@
             <Font size="31.0" />
          </font>
       </Label>
+      <Button layoutX="48.0" layoutY="102.0" mnemonicParsing="false" onAction="#selectMine" text="Mine" />
+      <TextField fx:id="oreCountTextField" layoutX="46.0" layoutY="127.0" prefHeight="25.0" prefWidth="47.0" text="0" />
+      <Button layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#stopWorker" text="Stop" />
+      <Label layoutX="93.0" layoutY="131.0" text="Ore" />
+      <Button layoutX="132.0" layoutY="102.0" mnemonicParsing="false" onAction="#selectTimber" text="Timber" />
+      <TextField fx:id="woodCountTextField" layoutX="135.0" layoutY="127.0" prefHeight="25.0" prefWidth="47.0" text="0" />
+      <Label layoutX="182.0" layoutY="131.0" text="Wood" />
    </children>
 </AnchorPane>

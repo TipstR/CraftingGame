@@ -1,7 +1,69 @@
 package org.game;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
+
+/**
+ * Controller for the Game-UI.
+ */
 public class GameController {
-}
+
+
+    /**
+     * Text field in UI to display the ore count.
+     */
+    @FXML
+    private TextField oreCountTextField;
+    /**
+     * Count of stored ore.
+     */
+    private int[] oreCount = {0};
+    /**
+     * Is true if miner should work.
+     */
+    private boolean[] minerGo = {false};
+
+    /**
+     * Text field in UI to display the wood count.
+     */
+    @FXML
+    private TextField woodCountTextField;
+    /**
+     * Count of stored wood.
+     */
+    private int[] woodCount = {0};
+    /**
+     * Is true if wood cutter should work.
+     */
+    private boolean[] woodCutterGo = {false};
+
+    /**
+     * Function to start mining ore. This is called by JavaFX.
+     */
+    @FXML
+    public void selectMine() {
+        final int DELAY = 1000;
+        gatherResources(minerGo, DELAY, oreCountTextField, oreCount);
+    }
+
+    /**
+     * Function to start cutting wood. This is called by JavaFX.
+     */
+    @FXML
+    public void selectTimber() {
+        final int DELAY = 1000;
+        gatherResources(woodCutterGo, DELAY, woodCountTextField, woodCount);
+    }
+
+    /**
+     * Function to stop all workers. This is called by JavaFX.
+     */
+    @FXML
+    public void stopWorker() {
+        minerGo[0] = false;
+        woodCutterGo[0] = false;
+    }
+
     /**
      * Function to start gathering a specific resource. After calling it stops every worker and starts a new Thread.
      *
