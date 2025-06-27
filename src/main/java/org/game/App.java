@@ -26,19 +26,26 @@ public class App extends Application {
      */
     @Override
     public void start(final Stage stage) throws IOException {
+        initializeScene();
+
+        if (scene == null) {
+            return;
+        }
+        stage.setScene(scene);
+        stage.setTitle("Crafting Game");
+        stage.show();
+
+    }
+
+    /**
+     * Initializes scene in a static function, so it can be used in start(stage).
+     * @throws IOException Can throw IOException.
+     */
+    private static void initializeScene() throws IOException {
         final int RES_X = 640;
         final int RES_Y = 480;
 
-        try {
-            // String css = "app.css";
-
-            scene = new Scene(loadFXML("menu"), RES_X, RES_Y);
-            stage.setScene(scene);
-            stage.setTitle("Crafting Game");
-            stage.show();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
+        scene = new Scene(loadFXML("menu"), RES_X, RES_Y);
     }
 
     /**
@@ -68,5 +75,4 @@ public class App extends Application {
     public static void main(final String[] args) {
         launch(args);
     }
-
 }
