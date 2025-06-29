@@ -16,24 +16,8 @@ import org.apache.logging.log4j.Logger;
  */
 public class GameController implements Initializable {
 
-    /**
-     * Text field in UI to display the population.
-     */
-    @FXML
-    private TextField populationTextField;
-    /**
-     * Starting population.
-     */
-    private final int INIT_POPULATION = 3;
-    /**
-     * Keeps track of the population.
-     */
-    private int population = INIT_POPULATION;
-    /**
-     * Text field in UI to display not working workers/population.
-     */
-    @FXML
-    private TextField freeWorkerTextField;
+  private static final Logger LOGGER = LogManager.getLogger(GameController.class);
+
   /**
    * Text field in UI to display the population.
    */
@@ -72,24 +56,6 @@ public class GameController implements Initializable {
    */
   private final ArrayList<Worker> miners = new ArrayList<Worker>();
 
-    /**
-     * Text field in UI to display the wood count.
-     */
-    @FXML
-    private TextField woodCountTextField;
-    /**
-     * Count of stored wood.
-     */
-    private int[] woodCount = {0};
-    /**
-     * Text field in UI to display current workers working as lumber jacks.
-     */
-    @FXML
-    private TextField lumberJackCountTextField;
-    /**
-     * List of lumber jacks. Keeps track of threads and kills them when done.
-     */
-    private ArrayList<Worker> lumberJacks = new ArrayList<Worker>();
   /**
    * Text field in UI to display the wood count.
    */
@@ -108,30 +74,26 @@ public class GameController implements Initializable {
    * List of lumber jacks. Keeps track of threads and kills them when done.
    */
   private final ArrayList<Worker> lumberJacks = new ArrayList<Worker>();
+  /**
+   * Count of built houses.
+   */
+  private int houseCount;
+  /**
+   * Text field in UI to display current built houses.
+   */
+  @FXML
+  private TextField houseCountTextField;
 
 
-    /**
-     * Function to add miners to mine ore. This is called by JavaFX.
-     */
-    @FXML
-    public void addMiner() {
-        if (getFreeWorkers() <= 0) {
-            return;
-        }
   /**
    * Function to add miners to mine ore. This is called by JavaFX.
    */
   @FXML
   public void addMiner() {
+    LOGGER.info("Trying to add miner...");
 
     if (getFreeWorkers() <= 0) {
-  /**
-   * Function to add miners to mine ore. This is called by JavaFX.
-   */
-  @FXML
-  public void addMiner() {
-
-    if (getFreeWorkers() <= 0) {
+      LOGGER.info("No free workers available! getFreeWorkers(): {}", getFreeWorkers());
       return;
     }
 
@@ -157,26 +119,14 @@ public class GameController implements Initializable {
   }
 
 
-    /**
-     * Function to add lumber jacks to gather wood. This is called by JavaFX.
-     */
-    @FXML
-    public void addLumberJack() {
-        if (getFreeWorkers() <= 0) {
-            return;
-        }
   /**
    * Function to add lumber jacks to gather wood. This is called by JavaFX.
    */
   @FXML
   public void addLumberJack() {
+    LOGGER.info("Trying to add lumber jack...");
     if (getFreeWorkers() <= 0) {
-  /**
-   * Function to add lumber jacks to gather wood. This is called by JavaFX.
-   */
-  @FXML
-  public void addLumberJack() {
-    if (getFreeWorkers() <= 0) {
+      LOGGER.info("No free workers available! getFreeWorkers(): {}", getFreeWorkers());
       return;
     }
 
@@ -257,20 +207,6 @@ public class GameController implements Initializable {
     workerThread.start();
   }
 
-    /**
-     * This function is called when the scene game.fxml is loaded.
-     *
-     * @param location
-     * The location used to resolve relative paths for the root object, or
-     * {@code null} if the location is not known.
-     *
-     * @param resources
-     * The resources used to localize the root object, or {@code null} if
-     * the root object was not localized.
-     */
-    @Override
-    public void initialize(final URL location, final ResourceBundle resources) {
-        startUiLoop();
   /**
    * Function for building new houses to increase population. This is called by JavaFX.
    */
@@ -284,6 +220,8 @@ public class GameController implements Initializable {
       oreCount[0] -= houseCostOre;
       woodCount[0] -= houseCostWood;
     } else {
+      LOGGER.info("Not enough Resources. oreCount[0]={}, woodCount[0]={}",
+            oreCount[0], woodCount[0]);
     }
   }
 
