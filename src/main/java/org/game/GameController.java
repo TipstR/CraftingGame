@@ -102,6 +102,7 @@ public class GameController implements Initializable {
 
     final int delay = 1000;
     gatherResources(miners.get(miners.size() - 1), delay, oreCount);
+    LOGGER.info("Miner added!");
   }
 
   /**
@@ -135,6 +136,7 @@ public class GameController implements Initializable {
 
     final int delay = 1000;
     gatherResources(lumberJacks.get(lumberJacks.size() - 1), delay, woodCount);
+    LOGGER.info("Lumber jack added!");
   }
 
   /**
@@ -142,11 +144,14 @@ public class GameController implements Initializable {
    */
   @FXML
   public void removeLumberJack() {
+    LOGGER.info("Trying to remove lumber jack...");
     if (lumberJacks.isEmpty()) {
+      LOGGER.info("There are no lumber jacks to remove! lumberJacks.isEmpty(): {}",
             lumberJacks.isEmpty());
       return;
     }
     lumberJacks.get(lumberJacks.size() - 1).setWorking(false);
+    LOGGER.info("Lumber jack removed!");
   }
 
   /**
@@ -168,6 +173,8 @@ public class GameController implements Initializable {
    * @param resourceCount Reference to the specific resource count.
    */
   public void gatherResources(final Worker worker, final long delay, final int... resourceCount) {
+    LOGGER.info("Trying to create new worker with: worker={}, delay={}, resourceCount={}",
+          worker, delay, resourceCount);
 
     worker.setWorking(true);
     final Thread workerThread = new Thread(new Runnable() {
@@ -235,6 +242,7 @@ public class GameController implements Initializable {
    */
   @Override
   public void initialize(final URL location, final ResourceBundle resources) {
+    LOGGER.info("Initialising UI-Loop...");
 
     startUiLoop();
   }
