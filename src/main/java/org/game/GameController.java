@@ -157,7 +157,6 @@ public class GameController implements Initializable {
                     elapsedTime += currentTime - previousTime;
 
                     if (elapsedTime >= delay) {
-                        System.out.println("gameController running...");
                         elapsedTime = 0;
                         resourceCount[0]++;
                     }
@@ -234,6 +233,36 @@ public class GameController implements Initializable {
             }
         });
         uiLoop.start();
+    }
+
+    /**
+     * Function to get ore count.
+     * @return Current ore count.
+     */
+    public int getOreCount() {
+        return oreCount[0];
+    }
+
+    /**
+     * Function to get wood count.
+     * @return Current wood count.
+     */
+    public int getWoodCount() {
+        return woodCount[0];
+    }
+    /**
+     * Function to get all miners.
+     * @return List of miners.
+     */
+    public ArrayList<Worker> getMiners() {
+        return miners;
+    }
+    /**
+     * Function to get all lumber jacks.
+     * @return List of lumber jacks.
+     */
+    public ArrayList<Worker> getLumberJacks() {
+        return lumberJacks;
     }
 }
 
