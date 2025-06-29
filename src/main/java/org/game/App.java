@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import atlantafx.base.theme.Dracula;
 
 /**
  * Main Class of Crafting Game.
@@ -17,7 +18,6 @@ public class App extends Application {
      * It's the current scene of the stage. Like a site of a website.
      */
     private static Scene scene;
-
 
     /**
      * Needed for javafx to start the UI. It is automatically called when javafx:run is run in maven.
@@ -31,10 +31,11 @@ public class App extends Application {
         if (scene == null) {
             return;
         }
+        setUserAgentStylesheet(new Dracula().getUserAgentStylesheet());
         stage.setScene(scene);
         stage.setTitle("Crafting Game");
-        stage.show();
 
+        stage.show();
     }
 
     /**
