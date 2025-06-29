@@ -32,6 +32,13 @@
             <artifactId>junit-jupiter-params</artifactId>
             <version>5.13.1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>5.18.0</version>
+            <scope>test</scope>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -132,6 +139,20 @@
                     </executions>
                 </plugin>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>10.26.0</version>
+                        </dependency>
+                    </dependencies>
+                    <configuration>
+                        <configLocation>google_checks.xml</configLocation>
+                    </configuration>
+                </plugin>
+                <plugin>
                     <groupId>org.openjfx</groupId>
                     <artifactId>javafx-maven-plugin</artifactId>
                     <version>0.0.8</version>
@@ -160,7 +181,7 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>3.6.0</version>
                 <configuration>
-                    <configLocation>myCheckstyle-checker.xml</configLocation>
+                    <configLocation>google_checks.xml</configLocation>
                     <!--          <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>-->
                 </configuration>
                 <reportSets>
@@ -174,13 +195,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.26.0</version>
+                <version>3.13.0</version>
                 <configuration>
                     <rulesets>
-                        <ruleset>pmd/rulesets/001-maven-pmd-plugin-custom.xml</ruleset>
+                        <ruleset>pmd-custom-ruleset.xml</ruleset>
                     </rulesets>
                 </configuration>
-
             </plugin>
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
