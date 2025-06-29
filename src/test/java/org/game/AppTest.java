@@ -1,18 +1,14 @@
 package org.game;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ExtendWith(MockitoExtension.class)
 public class AppTest {
   /**
    * gameController object to test gameController methods.
    */
-  @Mock
+
   private final GameController gameController = new GameController();
 
   /**
