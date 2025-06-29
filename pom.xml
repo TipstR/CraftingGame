@@ -18,7 +18,7 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>17.0.6</version>
+            <version>24.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -42,6 +42,11 @@
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
             <version>3.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.mkpaz</groupId>
+            <artifactId>atlantafx-base</artifactId>
+            <version>2.0.1</version>
         </dependency>
     </dependencies>
     <build>
@@ -125,6 +130,16 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <configuration>
+                    <mainClass>org.game.App</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
     <reporting>
@@ -161,6 +176,7 @@
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>4.9.3.0</version>
                 <configuration>
+                    <xmlOutput>true</xmlOutput>
                     <xmlOutput>true</xmlOutput>
                     <!-- Optional directory to put spotbugs xdoc xml report -->
                     <xmlOutputDirectory>target/site</xmlOutputDirectory>
