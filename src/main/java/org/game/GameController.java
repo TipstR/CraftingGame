@@ -1,13 +1,36 @@
 package org.game;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 /**
  * Controller for the Game-UI.
  */
-public class GameController {
+public class GameController implements Initializable {
 
+    /**
+     * Text field in UI to display the population.
+     */
+    @FXML
+    private TextField populationTextField;
+    /**
+     * Starting population.
+     */
+    private final int INIT_POPULATION = 3;
+    /**
+     * Keeps track of the population.
+     */
+    private int population = INIT_POPULATION;
+    /**
+     * Text field in UI to display not working workers/population.
+     */
+    @FXML
+    private TextField freeWorkerTextField;
 
     /**
      * Text field in UI to display the ore count.
@@ -19,9 +42,14 @@ public class GameController {
      */
     private int[] oreCount = {0};
     /**
-     * Is true if miner should work.
+     * Text field in UI to display current workers working as miners.
      */
-    private boolean[] minerGo = {false};
+    @FXML
+    private TextField minerCountTextField;
+    /**
+     * List of miners. Keeps track of threads and kills them when done.
+     */
+    private ArrayList<Worker> miners = new ArrayList<Worker>();
 
     /**
      * Text field in UI to display the wood count.
@@ -33,59 +61,96 @@ public class GameController {
      */
     private int[] woodCount = {0};
     /**
-     * Is true if wood cutter should work.
-     */
-    private boolean[] woodCutterGo = {false};
-
-    /**
-     * Function to start mining ore. This is called by JavaFX.
+     * Text field in UI to display current workers working as lumber jacks.
      */
     @FXML
-    public void selectMine() {
+    private TextField lumberJackCountTextField;
+    /**
+     * List of lumber jacks. Keeps track of threads and kills them when done.
+     */
+    private ArrayList<Worker> lumberJacks = new ArrayList<Worker>();
+
+
+    /**
+     * Function to add miners to mine ore. This is called by JavaFX.
+     */
+    @FXML
+    public void addMiner() {
+        if (getFreeWorkers() <= 0) {
+            return;
+        }
+
+        Worker miner = new Worker("miner");
+        miners.add(miner);
+
         final int DELAY = 1000;
-        gatherResources(minerGo, DELAY, oreCountTextField, oreCount);
+        gatherResources(miners.get(miners.size() - 1), DELAY, oreCount);
     }
-
     /**
-     * Function to start cutting wood. This is called by JavaFX.
+     * Function to remove miners. This is called by JavaFX.
      */
     @FXML
-    public void selectTimber() {
+    public void removeMiner() {
+        if (miners.isEmpty()) {
+            return;
+        }
+        miners.get(miners.size() - 1).setWorking(false);
+    }
+
+
+    /**
+     * Function to add lumber jacks to gather wood. This is called by JavaFX.
+     */
+    @FXML
+    public void addLumberJack() {
+        if (getFreeWorkers() <= 0) {
+            return;
+        }
+
+        Worker lumberJack = new Worker("lumberJack");
+        lumberJacks.add(lumberJack);
+
         final int DELAY = 1000;
-        gatherResources(woodCutterGo, DELAY, woodCountTextField, woodCount);
+        gatherResources(lumberJacks.get(lumberJacks.size() - 1), DELAY, woodCount);
     }
-
     /**
-     * Function to stop all workers. This is called by JavaFX.
+     * Function to remove lumber jacks. This is called by JavaFX.
      */
     @FXML
-    public void stopWorker() {
-        minerGo[0] = false;
-        woodCutterGo[0] = false;
+    public void removeLumberJack() {
+        if (lumberJacks.isEmpty()) {
+            return;
+        }
+        lumberJacks.get(lumberJacks.size() - 1).setWorking(false);
     }
 
     /**
-     * Function to start gathering a specific resource. After calling it stops every worker and starts a new Thread.
+     * Function to calculate how many free workers there are. This is calculated by subtracting the whole population
+     * with the amount of working workers.
+     * @return Count of free workers.
+     */
+    public int getFreeWorkers() {
+        return population - miners.size() - lumberJacks.size();
+    }
+
+    /**
+     * Function to start gathering a specific resource. After calling, it starts a new Thread.
      *
-     * @param workerGo Reference to a worker Boolean. Determines whether resources are getting gathered or not.
+     * @param worker Reference to a worker. Determines whether resources are getting gathered or not.
      * @param delay Determines the pause between gathering in ms
-     * @param textField Reference to a TextField in JavaFx
      * @param resourceCount Reference to the specific resource count.
      */
-    public void gatherResources(final boolean[] workerGo,
+    public void gatherResources(final Worker worker,
                                 final long delay,
-                                final TextField textField,
                                 final int[] resourceCount) {
-        stopWorker();
-
-        workerGo[0] = true;
-        Thread worker = new Thread(new Runnable() {
+        worker.setWorking(true);
+        Thread workerThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 long elapsedTime = 0;
                 long previousTime = 0;
 
-                while (workerGo[0]) {
+                while (worker.isWorking()) {
 
                     long currentTime = System.currentTimeMillis();
 
@@ -94,15 +159,81 @@ public class GameController {
                     if (elapsedTime >= delay) {
                         System.out.println("gameController running...");
                         elapsedTime = 0;
-                        textField.setText(Integer.toString(resourceCount[0]));
                         resourceCount[0]++;
                     }
 
                     previousTime = currentTime;
                 }
+
+                switch (worker.getJob()) {
+                    case "miner":
+                        miners.remove(worker);
+                        break;
+                    case "lumberJack":
+                        lumberJacks.remove(worker);
+                        break;
+                    default:
+                        break;
+                }
+
             }
         });
-        worker.start();
+        workerThread.start();
+    }
+
+    /**
+     * This function is called when the scene game.fxml is loaded.
+     *
+     * @param location
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     *
+     * @param resources
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
+    @Override
+    public void initialize(final URL location, final ResourceBundle resources) {
+        startUiLoop();
+    }
+
+    /**
+     * Function for starting the UI-Loop. It keeps all text fields updated.
+     */
+    public void startUiLoop() {
+        Thread uiLoop = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                long elapsedTime = 0;
+                long previousTime = 0;
+                final long UPDATE_TIME = 200;
+                final long SLEEP_TIME = 50;
+
+                while (true) {
+                    long currentTime = System.currentTimeMillis();
+                    elapsedTime += currentTime - previousTime;
+
+                    if (elapsedTime >= UPDATE_TIME) {
+                        Platform.runLater(() -> {
+                            populationTextField.setText(Integer.toString(population));
+                            freeWorkerTextField.setText(Integer.toString(getFreeWorkers()));
+                            lumberJackCountTextField.setText(Integer.toString(lumberJacks.size()));
+                            minerCountTextField.setText(Integer.toString(miners.size()));
+                            oreCountTextField.setText(Integer.toString(oreCount[0]));
+                            woodCountTextField.setText(Integer.toString(woodCount[0]));
+                        });
+                        elapsedTime = 0;
+                    }
+
+                    try {
+                        Thread.sleep(SLEEP_TIME); // Prevent CPU overuse
+                    } catch (InterruptedException e) {
+                        break; // exit thread if interrupted
+                    }
+                }
+            }
+        });
+        uiLoop.start();
     }
 }
 
