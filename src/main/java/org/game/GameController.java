@@ -343,6 +343,24 @@ public class GameController implements Initializable {
   public ArrayList<Worker> getLumberJacks() {
     return new ArrayList<Worker>(lumberJacks);
   }
+
+  /**
+   * Function to cheat ore for testing purposes.
+   *
+   * @param amount How much ore to cheat.
+   */
+  public void cheatOre(final int amount) {
+    oreCount[0] += amount;
+  }
+
+  /**
+   * Function to cheat ore for testing purposes.
+   *
+   * @param amount How much wood to cheat.
+   */
+  public void cheatWood(final int amount) {
+    woodCount[0] += amount;
+  }
 }
 
 
