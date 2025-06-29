@@ -34,6 +34,24 @@ public class GameController implements Initializable {
      */
     @FXML
     private TextField freeWorkerTextField;
+  /**
+   * Text field in UI to display the population.
+   */
+  @FXML
+  private TextField populationTextField;
+  /**
+   * Starting population.
+   */
+  private static final int INIT_POPULATION = 3;
+  /**
+   * Keeps track of the population.
+   */
+  private int population = INIT_POPULATION;
+  /**
+   * Text field in UI to display not working workers/population.
+   */
+  @FXML
+  private TextField freeWorkerTextField;
 
   /**
    * Text field in UI to display the ore count.
@@ -72,6 +90,24 @@ public class GameController implements Initializable {
      * List of lumber jacks. Keeps track of threads and kills them when done.
      */
     private ArrayList<Worker> lumberJacks = new ArrayList<Worker>();
+  /**
+   * Text field in UI to display the wood count.
+   */
+  @FXML
+  private TextField woodCountTextField;
+  /**
+   * Count of stored wood.
+   */
+  private int[] woodCount = {0};
+  /**
+   * Text field in UI to display current workers working as lumber jacks.
+   */
+  @FXML
+  private TextField lumberJackCountTextField;
+  /**
+   * List of lumber jacks. Keeps track of threads and kills them when done.
+   */
+  private final ArrayList<Worker> lumberJacks = new ArrayList<Worker>();
 
 
     /**
@@ -89,25 +125,19 @@ public class GameController implements Initializable {
   public void addMiner() {
 
     if (getFreeWorkers() <= 0) {
+  /**
+   * Function to add miners to mine ore. This is called by JavaFX.
+   */
+  @FXML
+  public void addMiner() {
+
+    if (getFreeWorkers() <= 0) {
       return;
     }
 
     final Worker miner = new Worker("miner");
     miners.add(miner);
 
-        final int DELAY = 1000;
-        gatherResources(miners.get(miners.size() - 1), DELAY, oreCount);
-    }
-    /**
-     * Function to remove miners. This is called by JavaFX.
-     */
-    @FXML
-    public void removeMiner() {
-        if (miners.isEmpty()) {
-            return;
-        }
-        miners.get(miners.size() - 1).setWorking(false);
-    }
     final int delay = 1000;
     gatherResources(miners.get(miners.size() - 1), delay, oreCount);
   }
@@ -117,10 +147,13 @@ public class GameController implements Initializable {
    */
   @FXML
   public void removeMiner() {
+    LOGGER.info("Trying to remove miner...");
     if (miners.isEmpty()) {
+      LOGGER.info("There are no miners to remove! miners.isEmpty(): {}", miners.isEmpty());
       return;
     }
     miners.get(miners.size() - 1).setWorking(false);
+    LOGGER.info("Miner removed!");
   }
 
 
@@ -138,25 +171,18 @@ public class GameController implements Initializable {
   @FXML
   public void addLumberJack() {
     if (getFreeWorkers() <= 0) {
+  /**
+   * Function to add lumber jacks to gather wood. This is called by JavaFX.
+   */
+  @FXML
+  public void addLumberJack() {
+    if (getFreeWorkers() <= 0) {
       return;
     }
 
     final Worker lumberJack = new Worker("lumberJack");
     lumberJacks.add(lumberJack);
 
-        final int DELAY = 1000;
-        gatherResources(lumberJacks.get(lumberJacks.size() - 1), DELAY, woodCount);
-    }
-    /**
-     * Function to remove lumber jacks. This is called by JavaFX.
-     */
-    @FXML
-    public void removeLumberJack() {
-        if (lumberJacks.isEmpty()) {
-            return;
-        }
-        lumberJacks.get(lumberJacks.size() - 1).setWorking(false);
-    }
     final int delay = 1000;
     gatherResources(lumberJacks.get(lumberJacks.size() - 1), delay, woodCount);
   }
@@ -183,22 +209,6 @@ public class GameController implements Initializable {
     return population - miners.size() - lumberJacks.size();
   }
 
-    /**
-     * Function to start gathering a specific resource. After calling, it starts a new Thread.
-     *
-     * @param worker Reference to a worker. Determines whether resources are getting gathered or not.
-     * @param delay Determines the pause between gathering in ms
-     * @param resourceCount Reference to the specific resource count.
-     */
-    public void gatherResources(final Worker worker,
-                                final long delay,
-                                final int[] resourceCount) {
-        worker.setWorking(true);
-        Thread workerThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                long elapsedTime = 0;
-                long previousTime = 0;
   /**
    * Function to start gathering a specific resource. After calling, it starts a new Thread.
    *
@@ -261,7 +271,22 @@ public class GameController implements Initializable {
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         startUiLoop();
+  /**
+   * Function for building new houses to increase population. This is called by JavaFX.
+   */
+  @FXML
+  public void buildHouse() {
+    final int houseCostOre = 100;
+    final int houseCostWood = 100;
+
+    if (oreCount[0] >= houseCostOre && woodCount[0] >= houseCostWood) {
+      houseCount += 1;
+      oreCount[0] -= houseCostOre;
+      woodCount[0] -= houseCostWood;
+    } else {
     }
+  }
+
   /**
    * This function is called when the scene game.fxml is loaded.
    *
@@ -292,17 +317,6 @@ public class GameController implements Initializable {
           long currentTime = System.currentTimeMillis();
           elapsedTime += currentTime - previousTime;
 
-                    if (elapsedTime >= UPDATE_TIME) {
-                        Platform.runLater(() -> {
-                            populationTextField.setText(Integer.toString(population));
-                            freeWorkerTextField.setText(Integer.toString(getFreeWorkers()));
-                            lumberJackCountTextField.setText(Integer.toString(lumberJacks.size()));
-                            minerCountTextField.setText(Integer.toString(miners.size()));
-                            oreCountTextField.setText(Integer.toString(oreCount[0]));
-                            woodCountTextField.setText(Integer.toString(woodCount[0]));
-                        });
-                        elapsedTime = 0;
-                    }
           if (elapsedTime >= updateTime) {
             Platform.runLater(() -> {
               population = INIT_POPULATION + houseCount;
@@ -339,27 +353,6 @@ public class GameController implements Initializable {
     return oreCount[0];
   }
 
-    /**
-     * Function to get wood count.
-     * @return Current wood count.
-     */
-    public int getWoodCount() {
-        return woodCount[0];
-    }
-    /**
-     * Function to get all miners.
-     * @return List of miners.
-     */
-    public ArrayList<Worker> getMiners() {
-        return miners;
-    }
-    /**
-     * Function to get all lumber jacks.
-     * @return List of lumber jacks.
-     */
-    public ArrayList<Worker> getLumberJacks() {
-        return lumberJacks;
-    }
   /**
    * Function to get wood count.
    *
