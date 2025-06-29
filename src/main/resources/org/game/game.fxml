@@ -6,7 +6,6 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="1050.0" prefWidth="1680.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.game.GameController">
@@ -16,67 +15,86 @@
             <Font size="31.0" />
          </font>
       </Label>
-      <TabPane layoutX="22.0" layoutY="50.0" prefHeight="986.0" prefWidth="1637.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane layoutX="22.0" layoutY="127.0" prefHeight="909.0" prefWidth="1637.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Home">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="538.0" prefWidth="856.0">
                      <children>
-                        <Line endX="1530.0" layoutX="103.0" layoutY="71.0" startX="-100.0" />
-                        <Label layoutX="72.0" layoutY="4.0" text="Population">
+                        <Button layoutX="38.0" layoutY="138.0" mnemonicParsing="false" onAction="#addLumberJack" text="+" />
+                        <Button layoutX="72.0" layoutY="138.0" mnemonicParsing="false" onAction="#removeLumberJack" text="-" />
+                        <Label alignment="CENTER" layoutX="14.0" layoutY="105.0" prefHeight="27.0" prefWidth="116.0" text="Logger Camp">
                            <font>
-                              <Font name="Arial" size="18.0" />
-                           </font>
-                        </Label>
-                        <TextField alignment="CENTER" editable="false" layoutX="55.0" layoutY="25.0" prefHeight="12.0" prefWidth="120.0" text="3">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </TextField>
-                        <Label layoutX="259.0" layoutY="4.0" text="Wood">
-                           <font>
-                              <Font name="Arial" size="18.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="woodCountTextField" alignment="CENTER" editable="false" layoutX="223.0" layoutY="25.0" prefHeight="26.0" prefWidth="120.0" text="0">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </TextField>
-                        <Label layoutX="422.0" layoutY="4.0" text="Ore">
-                           <font>
-                              <Font name="Arial" size="18.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="oreCountTextField" alignment="CENTER" editable="false" layoutX="378.0" layoutY="25.0" prefHeight="26.0" prefWidth="120.0" text="0">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </TextField>
-                        <Button layoutX="82.0" layoutY="207.0" mnemonicParsing="false" onAction="#addLumberJack" text="+" />
-                        <Button layoutX="116.0" layoutY="207.0" mnemonicParsing="false" onAction="#removeLumberJack" text="-" />
-                        <Label alignment="CENTER" layoutX="62.0" layoutY="187.0" prefHeight="18.0" prefWidth="107.0" text="Logger Camp" />
-                        <TextField fx:id="lumberJackCountTextField" alignment="TOP_CENTER" layoutX="61.0" layoutY="245.0" prefHeight="26.0" prefWidth="109.0" text="0" />
-                        <Label layoutX="72.0" layoutY="83.0" text="Free Worker">
+                              <Font size="18.0" />
+                           </font></Label>
+                        <TextField fx:id="lumberJackCountTextField" alignment="TOP_CENTER" editable="false" layoutX="17.0" layoutY="176.0" prefHeight="26.0" prefWidth="109.0" text="0" />
+                        <Label layoutX="28.0" layoutY="14.0" text="Free Worker">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="freeWorkerTextField" alignment="TOP_CENTER" layoutX="61.0" layoutY="110.0" prefHeight="26.0" prefWidth="109.0" text="3" />
-                        <Button layoutX="219.0" layoutY="207.0" mnemonicParsing="false" onAction="#addMiner" text="+" />
-                        <Button layoutX="253.0" layoutY="207.0" mnemonicParsing="false" onAction="#removeMiner" onDragDetected="#removeMiner" text="-" />
-                        <Label alignment="CENTER" layoutX="199.0" layoutY="187.0" prefHeight="18.0" prefWidth="107.0" text="Mine" />
-                        <TextField fx:id="minerCountTextField" alignment="TOP_CENTER" layoutX="198.0" layoutY="245.0" prefHeight="26.0" prefWidth="109.0" text="0" />
+                        <TextField fx:id="freeWorkerTextField" alignment="TOP_CENTER" editable="false" layoutX="17.0" layoutY="41.0" prefHeight="26.0" prefWidth="109.0" text="3" />
+                        <Button layoutX="175.0" layoutY="138.0" mnemonicParsing="false" onAction="#addMiner" text="+" />
+                        <Button layoutX="209.0" layoutY="138.0" mnemonicParsing="false" onAction="#removeMiner" onDragDetected="#removeMiner" text="-" />
+                        <Label alignment="CENTER" layoutX="155.0" layoutY="105.0" prefHeight="18.0" prefWidth="107.0" text="Mine">
+                           <font>
+                              <Font size="18.0" />
+                           </font></Label>
+                        <TextField fx:id="minerCountTextField" alignment="TOP_CENTER" editable="false" layoutX="154.0" layoutY="176.0" prefHeight="26.0" prefWidth="109.0" text="0" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
           <Tab text="Crafting">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="35.0" layoutY="40.0" text="Houses">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="houseCountTextField" editable="false" layoutX="102.0" layoutY="36.0" prefHeight="36.0" prefWidth="54.0" text="0" />
+                        <Button layoutX="176.0" layoutY="36.0" mnemonicParsing="false" onAction="#buildHouse" prefHeight="36.0" prefWidth="109.0" text="Build House" />
+                        <Label layoutX="309.0" layoutY="41.0" text="Costs: 100 Ore, 100 Wood">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children></AnchorPane>
             </content>
           </Tab>
         </tabs>
       </TabPane>
+      <Label layoutX="56.0" layoutY="71.0" text="Population">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="populationTextField" alignment="CENTER" editable="false" layoutX="39.0" layoutY="92.0" prefHeight="12.0" prefWidth="120.0" text="3">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <Label layoutX="243.0" layoutY="71.0" text="Wood">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="woodCountTextField" alignment="CENTER" editable="false" layoutX="207.0" layoutY="92.0" prefHeight="26.0" prefWidth="120.0" text="0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <Label layoutX="406.0" layoutY="71.0" text="Ore">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="oreCountTextField" alignment="CENTER" editable="false" layoutX="362.0" layoutY="92.0" prefHeight="26.0" prefWidth="120.0" text="0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
    </children>
 </AnchorPane>
